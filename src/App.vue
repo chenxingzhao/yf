@@ -6,7 +6,7 @@
       男士：{{num.man}} 女士：{{num.woman}} 儿童：{{num.child}}
     </div>
     <div>
-      {{zojie}}
+      {{zojieArray.join('、')}}
     </div>
   </div>
 </template>
@@ -34,33 +34,42 @@ export default {
         woman:2,
         child:3
       },
-      man:['N304'],
-      woman:['V304','V305'],
-      child:['E304','E305','E306']
+      zojieArray:[]
     }
   },
   methods:{
     jian(value){
-      if(this.num[value]==1){
-        alert('最低数量是1')
+      if(this.num[value]==0){
+        alert('最低数量是0')
         return
       }
       this.num[value]--;
-      this[value].pop();
+      this.zojie();
+
     },
     add(value){
       this.num[value]++;
-      let pushs=Number(this[value][0].slice(1));
-      this[value].push(this[value][0][0]+(pushs+this.num[value]));
+      this.zojie();
+    },
+    zojie(){
+       let shu=Number(this.source.man.slice(1));
+       this.zojieArray=[];
+     for(let item in this.num){
+        for(let i=0;i<this.num[item];i++){
+          let shuju=shu<100 ? '0'+shu++ : shu++; 
+          this.zojieArray.push(this.source[item][0]+shuju);
+        }
+     }
+      
     }
   },
   mounted() {
-
+    this.zojie();
   },
   computed:{
-    zojie(){
-      return this.man.join('、')+'、'+this.woman.join('、')+'、'+this.child.join('、');
-    }
+    // zojie(){
+    //   return this.man.join('、')+'、'+this.woman.join('、')+'、'+this.child.join('、');
+    // }
   }
 }
 </script>
